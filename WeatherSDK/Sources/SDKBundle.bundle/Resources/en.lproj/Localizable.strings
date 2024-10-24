@@ -1,0 +1,16 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Ruslan Kuzmin on 20.10.24.
+  
+*/
+
+"navigation_title" = "Weather in %@";
+"weather_in_city_label" = "The weather in %@ is:";
+"time_in_city_label" = "AT %@ LOCAL TIME:";
+"temperature_in_city_label" = "%.0f℃";
+"weather_screen_detail_forecast_button_title" = "To Detail information";
+"weather_screen_daily_forecast_button_title" = "To 24h daily forecast";
+"weather_screen_weekly_forecast_button_title" = "To Weekly forecast";
+"weather_screen_history_request_button_title" = "To request history";

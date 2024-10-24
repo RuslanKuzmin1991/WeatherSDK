@@ -1,0 +1,11 @@
+//#  Enlish
+
+"main_screen_title" = "Client App";
+"main_screen_header" = "Enter a city name and get the weather!";
+"main_screen_body" = "Type in a city name to get the weather information";
+"main_screen_edittext_placeholder" = "Type a city name...";
+"main_screen_button_title" = "Continue";
+"main_screen_alert_title_success" = "Success";
+"main_screen_alert_body_success" = "Data was recived and showed to the user!";
+"main_screen_alert_dissmiss_button_title" = "Dismiss";
+"main_screen_alert_title_error" = "Error";

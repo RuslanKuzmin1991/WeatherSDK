@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Ruslan Kuzmin on 20.10.24.
+  
+*/
+
+"navigation_title" = "24H Forecast";
+"weather_in_city_label" = "The weather in %@ is:";
+"time_in_city_label" = "AT %@ LOCAL TIME:";
+"temperature_in_city_label" = "%@℃";
