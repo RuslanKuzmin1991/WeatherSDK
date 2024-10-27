@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5874F7B02CC3325200AE8815 /* WeatherSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58C848F12CC32D9400854541 /* WeatherSDK.framework */; };
 		5874F7B12CC3325200AE8815 /* WeatherSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 58C848F12CC32D9400854541 /* WeatherSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		587D8EC12CCE5DC700BA8C1F /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 587D8EC02CCE5DC700BA8C1F /* .gitignore */; };
 		58C848FB2CC32D9400854541 /* WeatherSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58C848F12CC32D9400854541 /* WeatherSDK.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		5855A1242CBB0D29006D0CD5 /* TestTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5855A1342CBB0D2A006D0CD5 /* TestTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5855A13E2CBB0D2A006D0CD5 /* TestTaskUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestTaskUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		587D8EC02CCE5DC700BA8C1F /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		58C848F12CC32D9400854541 /* WeatherSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WeatherSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58C848FA2CC32D9400854541 /* WeatherSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -179,6 +181,7 @@
 				58C848F22CC32D9400854541 /* WeatherSDK */,
 				5874F7AF2CC3325200AE8815 /* Frameworks */,
 				5855A1252CBB0D29006D0CD5 /* Products */,
+				587D8EC02CCE5DC700BA8C1F /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};
@@ -386,6 +389,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				587D8EC12CCE5DC700BA8C1F /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
