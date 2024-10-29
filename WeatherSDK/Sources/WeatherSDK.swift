@@ -57,7 +57,7 @@ public class WeatherSDKEntity: WeatherSDKProtocol {
     
     /// Presents a SwiftUI weather view for a specific city.
     public func presentWeatherView(forCity cityName: String) -> AnyView {
-        let view = ForecastScreenBuilder().buildWeatherView(forCityName: cityName,
+        let view = ForecastViewBuilder().buildWeatherView(forCityName: cityName,
                                                      andApiKey: key,
                                                      delegate: delegate)
         return view as! AnyView

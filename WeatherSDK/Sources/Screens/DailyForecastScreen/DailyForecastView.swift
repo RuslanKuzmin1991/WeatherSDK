@@ -14,7 +14,7 @@ internal struct DailyForecastView: View {
             if !state.isEmbedded {
                 VStack {
                 }
-                .navigationTitle(String(format: "navigation_title".localized, state.cityName))
+                .navigationTitle(String(format: "daily_forecast_navigation_title".localized, state.cityName))
                 .font(.title)
                 .onAppear {
                     let appearance = UINavigationBarAppearance()
@@ -53,7 +53,7 @@ internal struct DailyForecastView: View {
                 await state.updateData()
             }
         }
-        }
+    }
     
     @ViewBuilder
     func Row(entity: WeatherUIData) -> some View {

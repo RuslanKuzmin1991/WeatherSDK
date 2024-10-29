@@ -5,12 +5,9 @@
 //  Created by Ruslan Kuzmin on 24.10.24.
 //
 
-protocol DailyForecastStateProtocol {
+protocol DailyForecastStateProtocol: BasicStateProtocol {
     var shouldGoBack: Bool { get set }
-    var isEmbedded: Bool { get set }
-    var cityName: String { get set }
     var data: [WeatherUIData] { get set }
-    var isLoading: Bool { get set }
     var weatherService: WeatherSerivce { get }
     func updateData() async
 }
@@ -54,14 +51,11 @@ final internal class DailyForecastState: DailyForecastStateProtocol, ObservableO
     @MainActor
     private func getHourForecastData() async {
         do {
-            if let weatherResponseDataArr = try await weatherService.getHourlyForecastWeather(forCity: cityName) {
-                await MainActor.run {
-                    data = []
-                    weatherResponseDataArr.forEach { weather in
-                        let weatherHourUI = WeatherUIData(weatherDTO: weather)
-                        data.append(weatherHourUI)
-                    }
-                }
+            let weatherResponseDataArr = try await weatherService.getHourlyForecastWeather(forCity: cityName)
+            data = []
+            weatherResponseDataArr.forEach { weather in
+                let weatherHourUI = WeatherUIData(weatherDTO: weather)
+                data.append(weatherHourUI)
             }
         } catch {
             print(error.localizedDescription)

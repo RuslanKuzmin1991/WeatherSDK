@@ -5,31 +5,27 @@
 //  Created by Ruslan Kuzmin on 17.10.24.
 //
 
-protocol MainWeatherStateProtocol {
+protocol MainWeatherStateProtocol: BasicStateProtocol {
     var shouldGoBack: Bool { get set }
-    var isEmbedded: Bool { get set }
     var delegate: WeatherSDKDelegate? { get set }
-    var cityName: String { get set }
-    var isLoading: Bool { get set }
     var currentWeatherData: WeatherUIData { get set }
-    var weatherService: WeatherSerivce { get }
     func updateData() async
     func onDailyForecastTap()
+    func onWeeklyForecastTap()
 }
 
-final internal class MainWeatherState: MainWeatherStateProtocol, ObservableObject {
+final internal class MainWeatherState: MainWeatherStateProtocol,
+                                       ObservableObject {
     var isEmbedded: Bool = false
     var delegate: WeatherSDKDelegate?
     var error: Error?
+    let weatherService: WeatherSerivce
     @Published var cityName: String = ""
     @Published var isLoading = false
     @Published var shouldGoBack = false
     @Published var currentWeatherData: WeatherUIData = WeatherUIData()
     //For preview
 //      self.currentWeatherData =  WeatherUIData(weatherDTO: CurrentWeatherDTO(temperature: 14, weather: Weather(description: "Clear sky"), dateTime: "20"), cityName: "Munich")
-    
-    let weatherService: WeatherSerivce
-
     
     init(cityName: String,
         weatherService: WeatherSerivce,
@@ -41,15 +37,19 @@ final internal class MainWeatherState: MainWeatherStateProtocol, ObservableObjec
     }
     
     deinit {
-        if error == nil {
-            delegate?.onFinished()
-        }
+//        if error == nil {
+//            delegate?.onFinished()
+//        }
     }
     
     func onDailyForecastTap() {
         
     }
   
+    func onWeeklyForecastTap() {
+        
+    }
+    
     @MainActor
     func updateData() async {
         self.isLoading = true
@@ -60,11 +60,8 @@ final internal class MainWeatherState: MainWeatherStateProtocol, ObservableObjec
     @MainActor
     private func getCurrentData() async {
         do {
-            if let data = try await weatherService.getCurrentWeather(forCity: cityName) {
-                await MainActor.run {
-                    self.currentWeatherData = WeatherUIData(weatherDTO: data, cityName: cityName)
-                }
-            }
+            let data = try await weatherService.getCurrentWeather(forCity: cityName)
+            self.currentWeatherData = WeatherUIData(weatherDTO: data, cityName: cityName)
         } catch {
             if self.error == nil {
                 self.error = error
