@@ -69,9 +69,13 @@ internal struct MainWeatherView: View {
                     .foregroundStyle(.textSecondary)
                     .font(.title)
                     .padding(.top, 8)
-            AsyncImage(url: weatherData.icon)
-        }
-        .padding(.horizontal, 16)
+                AsyncImage(url: weatherData.icon) { image in
+                    image.resizable()
+                } placeholder: {
+                    ProgressView()
+                        .controlSize(.regular)
+                }.frame(width: 100, height: 100)
+        }.padding(.horizontal, 16)
     }
     
     @ViewBuilder

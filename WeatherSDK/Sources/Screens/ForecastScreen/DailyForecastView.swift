@@ -69,10 +69,13 @@ internal struct DailyForecastView: View {
             Text(entity.weather)
                 .font(.textRegular)
                 .foregroundStyle(.textPrimary)
-            
-            AsyncImage(url: entity.icon)
-                .padding(.vertical, 10)
-                .padding(.trailing, 10)
+            AsyncImage(url: entity.icon) { image in
+                image.resizable()
+            } placeholder: {
+                ProgressView()
+                    .controlSize(.regular)
+            }.frame(width: 50, height: 50)
+            .padding(.leading, 10)
             Spacer()
         }
         .padding(.all, 8)
