@@ -44,4 +44,16 @@ internal struct WeatherUIData {
         let urlStr = iconUrlString + icon + ".png"
         self.icon = URL(string: urlStr)
     }
+    
+    init(weatherDaily: WeatherDataDaily) {
+        if let temp = weatherDaily.temp {
+            let localizedTemperatureString = String(format: "temperature_in_city_label".localized, temp)
+            self.temp = localizedTemperatureString
+        }
+        self.title = weatherDaily.datetime
+        self.weather = weatherDaily.weather.description
+        let icon = weatherDaily.weather.icon
+        let urlStr = iconUrlString + icon + ".png"
+        self.icon = URL(string: urlStr)
+    }
 }

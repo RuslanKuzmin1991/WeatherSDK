@@ -64,7 +64,6 @@ final class RouterApp: Router {
     private func handleNavigation(forViewController viewController: UIViewController,
                                   withNavigationType navigationType: NavigationType = .push,
                                   animated: Bool = false) {
-        
         switch navigationType {
         case .present: self.present(viewController: viewController,
                                     animate: animated)

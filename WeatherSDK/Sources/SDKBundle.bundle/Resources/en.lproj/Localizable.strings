@@ -7,6 +7,8 @@
 */
 
 "navigation_title" = "Weather in %@";
+"daily_forecast_navigation_title" = "Weather in %@ next 24 hours";
+"weekly_forecast_navigation_title" = "Weather in %@ next week";
 "weather_in_city_label" = "The weather in %@ is:";
 "time_in_city_label" = "AT %@ LOCAL TIME:";
 "temperature_in_city_label" = "%.0f℃";

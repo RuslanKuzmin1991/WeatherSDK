@@ -8,7 +8,11 @@
 import SwiftUI
 
 internal struct MainWeatherView: View {
+    //TODO: Temp implementation. Needs to be improved
     @State var weatherViewIsOn: Bool = false
+    @State var dailyForecaseViewIsOn: Bool = false
+    @State var weeklyForecaseViewIsOn: Bool = false
+    
     @StateObject var state: MainWeatherState
     @Environment(\.dismiss) var dismiss
     var body: some View {
@@ -97,6 +101,7 @@ internal struct MainWeatherView: View {
             Button {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
                 weatherViewIsOn.toggle()
+                dailyForecaseViewIsOn.toggle()
 //                        state.onDailyForecastTap()
             } label: {
                 HStack {
@@ -110,6 +115,7 @@ internal struct MainWeatherView: View {
             Button {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
                 weatherViewIsOn.toggle()
+                weeklyForecaseViewIsOn.toggle()
 //                        state.onDailyForecastTap()
             } label: {
                 HStack {
@@ -131,10 +137,14 @@ internal struct MainWeatherView: View {
                         .foregroundStyle(.control)
                         .font(.title)
                 }
-            }
+            }//TODO: Temp solution
             .navigationDestination(isPresented: $weatherViewIsOn) {
                 if weatherViewIsOn {
-                    DailyForecastView(state: DailyForecastState(cityName: state.cityName, weatherService: state.weatherService))
+                    if dailyForecaseViewIsOn {
+                        DailyForecastView(state: DailyForecastState(cityName: state.cityName, weatherService: state.weatherService))
+                    } else if weeklyForecaseViewIsOn {
+                        WeeklyForecastView(state: WeeklyForecastState(cityName: state.cityName, weatherService: state.weatherService))
+                    }
                 }
             }
         }

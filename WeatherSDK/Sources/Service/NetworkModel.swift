@@ -38,6 +38,17 @@ internal struct WeatherResponseHour: Codable {
     }
 }
 
+internal struct WeatherResponseDaily: Decodable {
+    let data: [WeatherDataDaily]
+    let timezone: String
+}
+
+struct WeatherDataDaily: Decodable {
+    let temp: Double?
+    let weather: Weather
+    let datetime: String
+}
+
 internal struct WeatherDTO: Codable {
     let temp: Double
     let timestampUtc: String
