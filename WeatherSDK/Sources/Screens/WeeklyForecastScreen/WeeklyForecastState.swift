@@ -12,6 +12,7 @@ protocol WeeklyForecastStateProtocol: BasicStateProtocol {
 
 final class WeeklyForecastState: WeeklyForecastStateProtocol,
                                  ObservableObject {
+    var router: (any RouterProtocol)?
     var cityName: String
     var isEmbedded: Bool = false
     let weatherService: WeatherSerivce

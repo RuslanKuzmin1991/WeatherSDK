@@ -87,8 +87,8 @@ internal struct MainWeatherView: View {
         VStack(spacing: 10) {
             Button {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
-                weatherViewIsOn.toggle()
-//                        state.onDailyForecastTap()
+//                weatherViewIsOn.toggle()
+                        state.onDailyForecastTap()
             } label: {
                 HStack {
                     Text("weather_screen_detail_forecast_button_title".localized)
@@ -100,9 +100,9 @@ internal struct MainWeatherView: View {
             
             Button {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
-                weatherViewIsOn.toggle()
-                dailyForecaseViewIsOn.toggle()
-//                        state.onDailyForecastTap()
+//                weatherViewIsOn.toggle()
+//                dailyForecaseViewIsOn.toggle()
+                        state.onDailyForecastTap()
             } label: {
                 HStack {
                     Text("weather_screen_daily_forecast_button_title".localized)
@@ -114,9 +114,9 @@ internal struct MainWeatherView: View {
             }
             Button {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
-                weatherViewIsOn.toggle()
-                weeklyForecaseViewIsOn.toggle()
-//                        state.onDailyForecastTap()
+//                weatherViewIsOn.toggle()
+//                weeklyForecaseViewIsOn.toggle()
+                        state.onWeeklyForecastTap()
             } label: {
                 HStack {
                     Text("weather_screen_weekly_forecast_button_title".localized)

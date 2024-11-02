@@ -12,7 +12,9 @@ protocol DailyForecastStateProtocol: BasicStateProtocol {
     func updateData() async
 }
 
-final internal class DailyForecastState: DailyForecastStateProtocol, ObservableObject {
+final internal class DailyForecastState: DailyForecastStateProtocol,
+                                         ObservableObject {
+    var router: (any RouterProtocol)?
     var isEmbedded: Bool = false
     var error: Error?
     @Published var cityName: String = ""
@@ -35,7 +37,6 @@ final internal class DailyForecastState: DailyForecastStateProtocol, ObservableO
         self.cityName = cityName
         self.weatherService = weatherService
         self.isEmbedded = isEmbedded
-        
     }
     
     deinit {

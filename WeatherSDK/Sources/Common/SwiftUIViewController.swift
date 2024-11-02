@@ -33,7 +33,7 @@ internal final class SwiftUIViewController: UIViewController {
         let backButton = UIBarButtonItem()
         backButton.title = "Back"
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-        let swiftUIView = rootView as? AnyView
+        let swiftUIView = AnyView(rootView)
         let hostingController = UIHostingController(rootView: swiftUIView)
         addChild(hostingController)
         view.addSubview(hostingController.view)
