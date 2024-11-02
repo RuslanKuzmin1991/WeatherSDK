@@ -10,5 +10,6 @@ protocol BasicStateProtocol {
     var isLoading: Bool { get set }
     var cityName: String { get set }
     var weatherService: WeatherSerivce { get }
+    var router: RouterProtocol? { get }
     func updateData() async
 }

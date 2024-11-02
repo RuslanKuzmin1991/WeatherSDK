@@ -16,6 +16,7 @@ protocol MainWeatherStateProtocol: BasicStateProtocol {
 
 final internal class MainWeatherState: MainWeatherStateProtocol,
                                        ObservableObject {
+    var router: (any RouterProtocol)?
     var isEmbedded: Bool = false
     var delegate: WeatherSDKDelegate?
     var error: Error?
@@ -43,11 +44,13 @@ final internal class MainWeatherState: MainWeatherStateProtocol,
     }
     
     func onDailyForecastTap() {
-        
+        self.router?.navigateToDailyForecast(forCity: cityName,
+                                             animated: true)
     }
   
     func onWeeklyForecastTap() {
-        
+        self.router?.navigateToWeeklyForecast(forCity: cityName,
+                                              animated: true)
     }
     
     @MainActor

@@ -34,7 +34,7 @@ public class MainStateImpl: MainState {
 
     private func uiKitNavigation() {
         router?.navigateToWeatherScreen(forCity: cityName,
-                                       withNavigationType: .push,
-                                       animated: false)
+                                        withNavigationType: .push,
+                                        animated: false)
     }
 }
