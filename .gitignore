@@ -16,6 +16,7 @@ build/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
+TestTask.xcodeproj/project.xcworkspace/xcuserdata/
 *.moved-aside
 *.xcuserstate
 *.xcuserdatad
