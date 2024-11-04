@@ -59,8 +59,8 @@ struct MainView: View {
                         .font(.textRegular)
                     Button {
                         //TODO: SwiftUI Navigation. Need to be uncommented for usage
-//                        weatherViewIsOn.toggle()
-                        state.onWeatherTap()
+                        weatherViewIsOn.toggle()
+//                        state.onWeatherTap()
                     } label: {
                         HStack {
                             Text("main_screen_button_title".localized)

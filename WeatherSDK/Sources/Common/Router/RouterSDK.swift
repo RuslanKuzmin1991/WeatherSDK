@@ -1,28 +1,16 @@
 //
-//  Router.swift
+//  RouterSDK.swift
 //  TestTask
 //
 //  Created by Ruslan Kuzmin on 29.10.24.
 //
 
 import UIKit
-import SwiftUI
-
 
 enum NavigationType {
     case push
     case present
     case rebase
-}
-
-protocol RouterProtocol {
-    func navigateToWeatherScreen(forCity city: String,
-                                 withNavigationType navigationType: NavigationType,
-                                 animated: Bool)
-    func navigateToDailyForecast(forCity city: String,
-                                 animated: Bool)
-    func navigateToWeeklyForecast(forCity city: String,
-                                  animated: Bool)
 }
 
 final class RouterSDK: RouterProtocol {
@@ -57,17 +45,6 @@ final class RouterSDK: RouterProtocol {
                                                                 router: self)
         pushTo(viewController: vc,
                animated: animated)
-    }
-    
-    func navigateToWeatherScreen(forCity city: String,
-                                withNavigationType navigationType: NavigationType = .push,
-                                animated: Bool = false) {
-        guard let viewController = weatherSDK?.presentWeatherViewController(forCity: city) else {
-            return
-        }
-        handleNavigation(forViewController: viewController,
-                         withNavigationType: navigationType,
-                         animated: animated)
     }
     
     private func handleNavigation(forViewController viewController: UIViewController,

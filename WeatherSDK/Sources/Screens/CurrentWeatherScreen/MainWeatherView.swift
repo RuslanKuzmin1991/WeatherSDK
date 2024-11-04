@@ -12,11 +12,14 @@ internal struct MainWeatherView: View {
     @State var weatherViewIsOn: Bool = false
     @State var dailyForecaseViewIsOn: Bool = false
     @State var weeklyForecaseViewIsOn: Bool = false
+    @State var navPath: NavigationPath
+   // @ObservedObject var router = RouterView()
     
     @StateObject var state: MainWeatherState
     @Environment(\.dismiss) var dismiss
     var body: some View {
-        NavigationStack {
+//        NavigationStack(path: $router.navPath) {
+        NavigationStack(path: $navPath) {
             if !state.isEmbedded {
                 VStack {
                 }
@@ -51,6 +54,24 @@ internal struct MainWeatherView: View {
             .padding(.vertical, 0)
             .task {
                 await state.updateData()
+            }
+        }
+//        .navigationDestination(isPresented: $weatherViewIsOn) {
+//            if weatherViewIsOn {
+//                if dailyForecaseViewIsOn {
+//                    DailyForecastView(state: DailyForecastState(cityName: state.cityName, weatherService: state.weatherService))
+//                } else if weeklyForecaseViewIsOn {
+//                    WeeklyForecastView(state: WeeklyForecastState(cityName: state.cityName, weatherService: state.weatherService))
+//                }
+//            }
+//        }
+        .navigationDestination(for: Destination.self) { destination in
+            switch destination {
+            case .dailyForecast(city: let city):
+                DailyForecastView(state: DailyForecastState(cityName: city, weatherService: state.weatherService))
+            case .weeklyForecast(city: let city):
+                WeeklyForecastView(state: WeeklyForecastState(cityName: city,
+                                                              weatherService: state.weatherService))
             }
         }
     }
@@ -102,7 +123,9 @@ internal struct MainWeatherView: View {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
 //                weatherViewIsOn.toggle()
 //                dailyForecaseViewIsOn.toggle()
-                        state.onDailyForecastTap()
+//                        state.onDailyForecastTap()
+//                router.navigateToDailyForecast(forCity: state.cityName)
+                navPath.append(Destination.dailyForecast(city: state.cityName))
             } label: {
                 HStack {
                     Text("weather_screen_daily_forecast_button_title".localized)
@@ -114,9 +137,11 @@ internal struct MainWeatherView: View {
             }
             Button {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
+//                router.navigateToWeeklyForecast(forCity: state.cityName)
+                navPath.append(Destination.weeklyForecast(city: state.cityName))
 //                weatherViewIsOn.toggle()
 //                weeklyForecaseViewIsOn.toggle()
-                        state.onWeeklyForecastTap()
+//                        state.onWeeklyForecastTap()
             } label: {
                 HStack {
                     Text("weather_screen_weekly_forecast_button_title".localized)
@@ -128,6 +153,7 @@ internal struct MainWeatherView: View {
             Button {
                 //TODO: SwiftUI Navigation. Need to be uncommented for usage
                 weatherViewIsOn.toggle()
+                dailyForecaseViewIsOn.toggle()
 //                        state.onDailyForecastTap()
             } label: {
                 HStack {
@@ -136,15 +162,6 @@ internal struct MainWeatherView: View {
                         .padding(.horizontal, 0)
                         .foregroundStyle(.control)
                         .font(.title)
-                }
-            }//TODO: Temp solution
-            .navigationDestination(isPresented: $weatherViewIsOn) {
-                if weatherViewIsOn {
-                    if dailyForecaseViewIsOn {
-                        DailyForecastView(state: DailyForecastState(cityName: state.cityName, weatherService: state.weatherService))
-                    } else if weeklyForecaseViewIsOn {
-                        WeeklyForecastView(state: WeeklyForecastState(cityName: state.cityName, weatherService: state.weatherService))
-                    }
                 }
             }
         }
@@ -157,7 +174,7 @@ internal struct MainWeatherView: View {
     let weatherSerivce = WeatherNetworkSerivce(key: "")
     let state = MainWeatherState(cityName: "Munich",
                                   weatherService: weatherSerivce)
-    MainWeatherView(state: state)
+//    MainWeatherView(state: state)
 }
 
 

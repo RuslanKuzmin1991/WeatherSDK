@@ -40,6 +40,7 @@ final internal class DailyForecastState: DailyForecastStateProtocol,
     }
     
     deinit {
+        print("deinit")
     }
   
     @MainActor
