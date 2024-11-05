@@ -13,8 +13,7 @@ internal final class ForecastViewBuilder {
                    delegate: WeatherSDKDelegate?) -> some View {
         let weatherService = WeatherNetworkSerivce(key: key)
         let state = MainWeatherState(cityName: cityName,
-                                  weatherService: weatherService)
-        state.delegate = delegate
+                                     weatherService: weatherService)
         let rootView = MainWeatherView(state: state)
         return rootView
     }

@@ -28,6 +28,10 @@ public class MainStateImpl: MainState {
         self.isEmbedded = isEmbedded
     }
     
+    deinit {
+        print("Deinit \(String(describing: Self.self))")
+    }
+    
     func onWeatherTap() {
         uiKitNavigation()
     }

@@ -57,7 +57,7 @@ struct WeeklyForecastView: View {
     }
     
     @ViewBuilder
-    func Row(entity: WeatherUIData) -> some View {
+    func Row(entity: WeatherUIDataProtocol) -> some View {
         HStack(spacing: 10) {
             Text(entity.title)
                 .font(.textRegular)

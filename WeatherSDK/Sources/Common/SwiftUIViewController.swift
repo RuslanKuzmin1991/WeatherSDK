@@ -11,7 +11,6 @@ import UIKit
 internal final class SwiftUIViewController: UIViewController {
     var cityName: String
     var rootView: any View
-    var delegate: WeatherSDKDelegate?
     
     init(cityName: String,
          rootView: any View) {

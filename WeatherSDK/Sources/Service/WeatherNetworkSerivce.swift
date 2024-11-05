@@ -43,7 +43,7 @@ final internal class WeatherNetworkSerivce: WeatherSerivce {
         self.key = key
     }
     
-    func getCurrentWeather(forCity city: String) async throws -> CurrentWeatherDTO {
+    func getCurrentWeather(forCity city: String) async throws -> CurrentWeatherDTOProtocol {
         guard var url = URL(string: urlString) else {
             throw ApiError.wrongUrl
         }
@@ -55,46 +55,15 @@ final internal class WeatherNetworkSerivce: WeatherSerivce {
         
         var request = URLRequest(url: url)
         request.httpMethod = ApiMethod.get.rawValue
-
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw ApiError.invalidResponse
-            }
-            let statusCode = httpResponse.statusCode
-            if statusCode >= 500 {
-                throw ApiError.serverError(code: httpResponse.statusCode)
-            }
-            if statusCode >= 400 {
-                throw ApiError.clientError("Client side error")
-            }
-            if statusCode >= 200 && statusCode < 300 {
-                
-//                 Print for Debug
-                            if let dataString = String(data: data, encoding: .utf8) {
-                                print("data = \(dataString)")
-                            }
-
-                let decoder = JSONDecoder()
-                do {
-                    let weatherResponse = try decoder.decode(WeatherResponse.self, from: data)
-                    print(weatherResponse)
-                    guard let dataModel = weatherResponse.data.first else {
-                        throw ApiError.invalidResponse
-                    }
-                    return dataModel
-                } catch {
-                    throw ApiError.parsingError(error.localizedDescription)
-                }
-            } else {
-                throw ApiError.invalidResponse
-            }
-        } catch {
-            throw error
+  
+        let weatherResponse: WeatherResponse = try await performRequest(urlRequest: request)
+        guard let dataModel = weatherResponse.data.first else {
+            throw ApiError.invalidResponse
         }
+        return dataModel
     }
     
-    func getHourlyForecastWeather(forCity city: String) async throws -> [WeatherDTO] {
+    func getHourlyForecastWeather(forCity city: String) async throws -> [WeatherDTOProtocol] {
         guard var url = URL(string: "https://api.weatherbit.io/v2.0" ) else {
             throw ApiError.wrongUrl
         }
@@ -107,40 +76,12 @@ final internal class WeatherNetworkSerivce: WeatherSerivce {
         ])
         var request = URLRequest(url: url)
         request.httpMethod = ApiMethod.get.rawValue
-
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw ApiError.invalidResponse
-            }
-            let statusCode = httpResponse.statusCode
-            if statusCode >= 500 {
-                throw ApiError.serverError(code: httpResponse.statusCode)
-            }
-            if statusCode >= 400 {
-                throw ApiError.clientError("Client side error")
-            }
-            if statusCode >= 200 && statusCode < 300 {
-//                 Print for debugging
-//                            if let dataString = String(data: data, encoding: .utf8) {
-//                                print("data = \(dataString)")
-//                            }
-                
-                do {
-                    let weatherResponse = try parseWeatherData(from: data)
-                    return weatherResponse.data
-                } catch {
-                    throw ApiError.parsingError(error.localizedDescription)
-                }
-            } else {
-                throw ApiError.invalidResponse
-            }
-        } catch {
-            throw error
-        }
+        
+        let weatherResponse: WeatherResponseHour = try await performRequest(urlRequest: request)
+        return weatherResponse.data
     }
     
-    func getWeeklyForecastWeather(forCity city: String) async throws -> [WeatherDataDaily] {
+    func getWeeklyForecastWeather(forCity city: String) async throws -> [WeatherDataDailyProtocol] {
         guard var url = URL(string: urlString) else {
             throw ApiError.wrongUrl
         }
@@ -152,9 +93,14 @@ final internal class WeatherNetworkSerivce: WeatherSerivce {
         ])
         var request = URLRequest(url: url)
         request.httpMethod = ApiMethod.get.rawValue
-
+        
+        let weatherResponse: WeatherResponseDaily = try await performRequest(urlRequest: request)
+        return weatherResponse.data
+    }
+    
+    private func performRequest<T: Decodable>(urlRequest: URLRequest) async throws -> T {
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw ApiError.invalidResponse
             }
@@ -166,32 +112,21 @@ final internal class WeatherNetworkSerivce: WeatherSerivce {
                 throw ApiError.clientError("Client side error")
             }
             if statusCode >= 200 && statusCode < 300 {
-//                 Print for debugging
-                            if let dataString = String(data: data, encoding: .utf8) {
-                                print("data = \(dataString)")
-                            }
+                //                 Print for debugging
+                if let dataString = String(data: data, encoding: .utf8) {
+                    print("data = \(dataString)")
+                }
                 
                 do {
                     let decoder = JSONDecoder()
-                    let weatherResponse = try decoder.decode(WeatherResponseDaily.self, from: data)
-                    return weatherResponse.data
+                    let weatherResponse = try decoder.decode(T.self, from: data)
+                    return weatherResponse
                 } catch {
                     throw ApiError.parsingError(error.localizedDescription)
                 }
             } else {
                 throw ApiError.invalidResponse
             }
-        } catch {
-            throw error
-        }
-    }
-    
-    private func parseWeatherData(from jsonData: Data) throws -> WeatherResponseHour {
-        let decoder = JSONDecoder()
-        do {
-            let weatherResponse = try decoder.decode(WeatherResponseHour.self,
-                                                     from: jsonData)
-            return weatherResponse
         } catch {
             throw error
         }

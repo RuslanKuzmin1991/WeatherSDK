@@ -56,7 +56,7 @@ internal struct MainWeatherView: View {
     }
     
     @ViewBuilder
-    func Content(weatherData: WeatherUIData) -> some View {
+    func Content(weatherData: WeatherUIDataProtocol) -> some View {
         VStack(spacing: 4) {
                 Text(weatherData.title)
                     .foregroundStyle(.textPrimary)
