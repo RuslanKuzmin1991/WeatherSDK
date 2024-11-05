@@ -5,6 +5,7 @@
 //  Created by Ruslan Kuzmin on 19.10.24.
 //
 import UIKit
+import SwiftUI
 
 protocol ScreenBuilderProtocol {
     func buildWeatherScreen(forCityName cityName: String,
@@ -28,10 +29,9 @@ internal final class ForecastScreenBuilder: ScreenBuilderProtocol {
                             delegate: WeatherSDKDelegate?) -> UIViewController {
         let weatherService = WeatherNetworkSerivce(key: key)
         let state = MainWeatherState(cityName: cityName,
-                                      weatherService: weatherService,
-                                      isEmbedded: true)
-        state.delegate = delegate
-        let rootView = MainWeatherView(state: state)
+                                     weatherService: weatherService,
+                                     isEmbedded: true)
+        let rootView = MainWeatherView(navPath: NavigationPath(), state: state)
         let vc = SwiftUIViewController(cityName: cityName,
                                        rootView: rootView)
         vc.delegate = delegate

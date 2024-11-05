@@ -15,6 +15,14 @@ public enum Destination: Codable,
 
 final class RouterView: ObservableObject,
                         RouterProtocol {
+    func handleError(error: any Error) {
+        
+    }
+    
+    func handleSuccess() {
+        
+    }
+    
     func navigateToDailyForecast(forCity city: String,
                                  animated: Bool = false) {
         navPath.append(Destination.dailyForecast(city: city))

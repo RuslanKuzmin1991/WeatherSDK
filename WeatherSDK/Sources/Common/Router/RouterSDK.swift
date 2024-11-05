@@ -14,6 +14,13 @@ enum NavigationType {
 }
 
 final class RouterSDK: RouterProtocol {
+    func handleError(error: any Error) {
+        
+    }
+    
+    func handleSuccess() {
+    }
+    
     var rootNavigator: UINavigationController?
     var rootController: UIViewController
     var weatherSDK: WeatherSDKProtocol?

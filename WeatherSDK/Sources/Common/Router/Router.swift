@@ -10,4 +10,6 @@ protocol RouterProtocol {
                                  animated: Bool)
     func navigateToWeeklyForecast(forCity city: String,
                                   animated: Bool)
+    func handleError(error: any Error)
+    func handleSuccess()
 }

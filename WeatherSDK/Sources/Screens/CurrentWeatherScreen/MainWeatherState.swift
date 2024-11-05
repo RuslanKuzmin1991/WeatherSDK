@@ -7,7 +7,6 @@
 
 protocol MainWeatherStateProtocol: BasicStateProtocol {
     var shouldGoBack: Bool { get set }
-    var delegate: WeatherSDKDelegate? { get set }
     var currentWeatherData: WeatherUIData { get set }
     func updateData() async
     func onDailyForecastTap()
@@ -18,7 +17,6 @@ final internal class MainWeatherState: MainWeatherStateProtocol,
                                        ObservableObject {
     var router: (any RouterProtocol)?
     var isEmbedded: Bool = false
-    var delegate: WeatherSDKDelegate?
     var error: Error?
     let weatherService: WeatherSerivce
     @Published var cityName: String = ""
@@ -71,7 +69,7 @@ final internal class MainWeatherState: MainWeatherStateProtocol,
                 if !isEmbedded {
                     shouldGoBack = true
                 }
-                delegate?.onFinishedWithError(error: error)
+                router?.handleError(error: error)
             }
         }
     }
