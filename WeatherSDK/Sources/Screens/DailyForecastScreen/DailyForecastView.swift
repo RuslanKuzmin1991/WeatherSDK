@@ -9,6 +9,7 @@ import SwiftUI
 internal struct DailyForecastView: View {
     @StateObject var state: DailyForecastState
     @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         NavigationStack {
             if !state.isEmbedded {
@@ -56,7 +57,7 @@ internal struct DailyForecastView: View {
     }
     
     @ViewBuilder
-    func Row(entity: WeatherUIData) -> some View {
+    func Row(entity: WeatherUIDataProtocol) -> some View {
         HStack(spacing: 10) {
             Text(entity.title)
                 .font(.textRegular)

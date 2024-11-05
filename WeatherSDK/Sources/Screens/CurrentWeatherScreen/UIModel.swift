@@ -9,7 +9,15 @@ import Foundation
 
 let iconUrlString = "https://cdn.weatherbit.io/static/img/icons/"
 
-internal struct WeatherUIData {
+protocol WeatherUIDataProtocol {
+    var title: String { get set }
+    var temp: String { get set }
+    var weather: String { get set }
+    var time: String { get set }
+    var icon: URL? { get set }
+}
+
+internal struct WeatherUIData: WeatherUIDataProtocol {
     var id = UUID()
     var title: String = ""
     var temp: String = ""
@@ -19,7 +27,7 @@ internal struct WeatherUIData {
     
     init() {}
     
-    init(weatherDTO: CurrentWeatherDTO,
+    init(weatherDTO: CurrentWeatherDTOProtocol,
           cityName: String) {
         let formatedTime = weatherDTO.dateTime.formatTimeHoursAndMinutes ?? weatherDTO.dateTime
         let localizedCityNameString = String(format: "weather_in_city_label".localized, cityName)
@@ -34,7 +42,7 @@ internal struct WeatherUIData {
         self.icon = URL(string: urlStr)
     }
     
-    init(weatherDTO: WeatherDTO) {
+    init(weatherDTO: WeatherDTOProtocol) {
         let formatedTime = weatherDTO.timestampUtc.formatTime ?? weatherDTO.timestampUtc
         let localizedTemperatureString = String(format: "temperature_in_city_label".localized, weatherDTO.temp)
         self.title = formatedTime
@@ -45,7 +53,7 @@ internal struct WeatherUIData {
         self.icon = URL(string: urlStr)
     }
     
-    init(weatherDaily: WeatherDataDaily) {
+    init(weatherDaily: WeatherDataDailyProtocol) {
         if let temp = weatherDaily.temp {
             let localizedTemperatureString = String(format: "temperature_in_city_label".localized, temp)
             self.temp = localizedTemperatureString

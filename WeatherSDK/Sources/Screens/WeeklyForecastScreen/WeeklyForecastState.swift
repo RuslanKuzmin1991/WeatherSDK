@@ -5,20 +5,20 @@
 //  Created by Ruslan Kuzmin on 29.10.24.
 //
 
-protocol WeeklyForecastStateProtocol: BasicStateProtocol {
-    var data: [WeatherUIData] { get set }
+protocol WeeklyForecastStateProtocol: BasicStateProtocol,
+                                      ObservableObject {
+    var data: [WeatherUIDataProtocol] { get set }
     var shouldGoBack: Bool { get set }
 }
 
-final class WeeklyForecastState: WeeklyForecastStateProtocol,
-                                 ObservableObject {
+final class WeeklyForecastState: WeeklyForecastStateProtocol {
     var router: (any RouterProtocol)?
     var cityName: String
     var isEmbedded: Bool = false
     let weatherService: WeatherSerivce
     var shouldGoBack = false
     
-    @Published var data: [WeatherUIData] = []
+    @Published var data: [WeatherUIDataProtocol] = []
     @Published var isLoading: Bool = false
     
     init(isEmbedded: Bool = false,
@@ -27,6 +27,10 @@ final class WeeklyForecastState: WeeklyForecastStateProtocol,
         self.isEmbedded = isEmbedded
         self.cityName = cityName
         self.weatherService = weatherService
+    }
+    
+    deinit {
+        print("Deinit \(String(describing: Self.self))")
     }
     
     @MainActor
@@ -46,7 +50,7 @@ final class WeeklyForecastState: WeeklyForecastStateProtocol,
                 data.append(weatherHourUI)
             }
         } catch {
-            print(error.localizedDescription)
+            router?.handleError(error: error)
         }
     }
 }

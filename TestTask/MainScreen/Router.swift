@@ -41,7 +41,7 @@ final class RouterApp: Router {
     
     func setupSDK() {
         weatherSDK = WeatherSDKEntity(withApiKey: API_KEY,
-                                   andDelegate: self)
+                                      andDelegate: self)
     }
     
     func navigateToWeatherScreen(forCity city: String,

@@ -16,33 +16,45 @@ enum NavigationType {
 }
 
 protocol RouterProtocol {
-    func navigateToWeatherScreen(forCity city: String,
-                                 withNavigationType navigationType: NavigationType,
-                                 animated: Bool)
     func navigateToDailyForecast(forCity city: String,
                                  animated: Bool)
     func navigateToWeeklyForecast(forCity city: String,
                                   animated: Bool)
+    func handleError(error: any Error)
+    func handleSuccess()
 }
 
 final class RouterSDK: RouterProtocol {
     var rootNavigator: UINavigationController?
     var rootController: UIViewController
-    var weatherSDK: WeatherSDKProtocol?
-    var currentNavigationType: NavigationType?
-    var apiKey: String = ""
+    
+    private var currentNavigationType: NavigationType?
+    private var apiKey: String
+    private weak var delegate: WeatherSDKDelegate?
     
     init(withVC vc: UIViewController,
-         andApiKey apiKey: String) {
+         andApiKey apiKey: String,
+         andDelegate delegate: WeatherSDKDelegate?) {
         rootController = vc
         self.apiKey = apiKey
+    }
+    
+    deinit {
+        print("Deinit \(String(describing: Self.self))")
+    }
+    
+    func handleError(error: any Error) {
+        delegate?.onFinishedWithError(error: error)
+    }
+    
+    func handleSuccess() {
+        delegate?.onFinished()
     }
     
     func navigateToDailyForecast(forCity city: String,
                                  animated: Bool = false) {
         let vc = ForecastScreenBuilder().buildDalyForcastScreen(forCityName: city,
                                                                 andApiKey: apiKey,
-                                                                delegate: nil,
                                                                 router: self)
         pushTo(viewController: vc,
                animated: animated)
@@ -52,22 +64,10 @@ final class RouterSDK: RouterProtocol {
     func navigateToWeeklyForecast(forCity city: String,
                                   animated: Bool = false) {
         let vc = ForecastScreenBuilder().buildWeeklyForcastScreen(forCityName: city,
-                                                                andApiKey: apiKey,
-                                                                delegate: nil,
-                                                                router: self)
+                                                                  andApiKey: apiKey,
+                                                                  router: self)
         pushTo(viewController: vc,
                animated: animated)
-    }
-    
-    func navigateToWeatherScreen(forCity city: String,
-                                withNavigationType navigationType: NavigationType = .push,
-                                animated: Bool = false) {
-        guard let viewController = weatherSDK?.presentWeatherViewController(forCity: city) else {
-            return
-        }
-        handleNavigation(forViewController: viewController,
-                         withNavigationType: navigationType,
-                         animated: animated)
     }
     
     private func handleNavigation(forViewController viewController: UIViewController,
@@ -116,13 +116,5 @@ final class RouterSDK: RouterProtocol {
             self.rootNavigator?.pushViewController(viewController,
                                                   animated: animated)
         }
-    }
-}
-
-extension RouterSDK: WeatherSDKDelegate {
-    func onFinished() {
-    }
-    
-    func onFinishedWithError(error: any Error) {
     }
 }

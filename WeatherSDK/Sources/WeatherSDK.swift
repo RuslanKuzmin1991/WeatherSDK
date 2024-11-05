@@ -33,7 +33,7 @@ public protocol WeatherSDKProtocol {
 ///
 public class WeatherSDKEntity: WeatherSDKProtocol {
     var key: String
-    var delegate: WeatherSDKDelegate?
+    weak var delegate: WeatherSDKDelegate?
     
     /// Initializes the SDK with an API key and a delegate.
     public init(withApiKey apiKey: String,
@@ -70,7 +70,7 @@ public class WeatherSDKEntity: WeatherSDKProtocol {
 /// Implement this protocol to respond to completion or error events when working
 /// with `WeatherSDKEntity`. The delegate provides feedback when weather data is
 /// successfully loaded or when an error occurs.
-public protocol WeatherSDKDelegate {
+public protocol WeatherSDKDelegate: AnyObject {
     
     /// Called when the weather data is successfully loaded.
     ///

@@ -5,26 +5,23 @@
 //  Created by Ruslan Kuzmin on 17.10.24.
 //
 
-protocol MainWeatherStateProtocol: BasicStateProtocol {
+protocol MainWeatherStateProtocol: BasicStateProtocol, ObservableObject {
     var shouldGoBack: Bool { get set }
-    var delegate: WeatherSDKDelegate? { get set }
-    var currentWeatherData: WeatherUIData { get set }
+    var currentWeatherData: WeatherUIDataProtocol { get set }
     func updateData() async
     func onDailyForecastTap()
     func onWeeklyForecastTap()
 }
 
-final internal class MainWeatherState: MainWeatherStateProtocol,
-                                       ObservableObject {
+final internal class MainWeatherState: MainWeatherStateProtocol {
     var router: (any RouterProtocol)?
     var isEmbedded: Bool = false
-    var delegate: WeatherSDKDelegate?
     var error: Error?
     let weatherService: WeatherSerivce
     @Published var cityName: String = ""
     @Published var isLoading = false
     @Published var shouldGoBack = false
-    @Published var currentWeatherData: WeatherUIData = WeatherUIData()
+    @Published var currentWeatherData: WeatherUIDataProtocol = WeatherUIData()
     //For preview
 //      self.currentWeatherData =  WeatherUIData(weatherDTO: CurrentWeatherDTO(temperature: 14, weather: Weather(description: "Clear sky"), dateTime: "20"), cityName: "Munich")
     
@@ -38,9 +35,7 @@ final internal class MainWeatherState: MainWeatherStateProtocol,
     }
     
     deinit {
-//        if error == nil {
-//            delegate?.onFinished()
-//        }
+        print("Deinit \(String(describing: Self.self))")
     }
     
     func onDailyForecastTap() {
@@ -71,7 +66,7 @@ final internal class MainWeatherState: MainWeatherStateProtocol,
                 if !isEmbedded {
                     shouldGoBack = true
                 }
-                delegate?.onFinishedWithError(error: error)
+                router?.handleError(error: error)
             }
         }
     }

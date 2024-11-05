@@ -5,20 +5,19 @@
 //  Created by Ruslan Kuzmin on 24.10.24.
 //
 
-protocol DailyForecastStateProtocol: BasicStateProtocol {
+protocol DailyForecastStateProtocol: BasicStateProtocol, ObservableObject {
     var shouldGoBack: Bool { get set }
-    var data: [WeatherUIData] { get set }
+    var data: [WeatherUIDataProtocol] { get set }
     var weatherService: WeatherSerivce { get }
     func updateData() async
 }
 
-final internal class DailyForecastState: DailyForecastStateProtocol,
-                                         ObservableObject {
+final internal class DailyForecastState: DailyForecastStateProtocol {
     var router: (any RouterProtocol)?
     var isEmbedded: Bool = false
     var error: Error?
     @Published var cityName: String = ""
-    @Published var data: [WeatherUIData] = []
+    @Published var data: [WeatherUIDataProtocol] = []
     
                                             /*[WeatherUIData(),
                                                WeatherUIData(),
@@ -40,6 +39,7 @@ final internal class DailyForecastState: DailyForecastStateProtocol,
     }
     
     deinit {
+        print("Deinit \(String(describing: Self.self))")
     }
   
     @MainActor
@@ -59,7 +59,7 @@ final internal class DailyForecastState: DailyForecastStateProtocol,
                 data.append(weatherHourUI)
             }
         } catch {
-            print(error.localizedDescription)
+            router?.handleError(error: error)
         }
     }
 }
