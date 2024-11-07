@@ -23,14 +23,12 @@ protocol Router {
 
 final class RouterApp: Router {
     var rootNavigator: UINavigationController
-    var weatherSDK: WeatherSDKProtocol?
     var currentNavigationType: NavigationType?
     init() {
         rootNavigator = UINavigationController()
     }
     
     func setRootView() {
-        setupSDK()
         let mainView = MainView(state: MainStateImpl(router: self, isEmbedded: true))
                         .environment(\.router, self)
         let hostingController = UIHostingController(rootView: mainView)
@@ -39,17 +37,13 @@ final class RouterApp: Router {
         rootNavigator.navigationBar.tintColor = .control
     }
     
-    func setupSDK() {
-        weatherSDK = WeatherSDKEntity(withApiKey: API_KEY,
-                                      andDelegate: self)
-    }
-    
     func navigateToWeatherScreen(forCity city: String,
                                 withNavigationType navigationType: NavigationType = .push,
                                 animated: Bool = false) {
-        guard let viewController = weatherSDK?.presentWeatherViewController(forCity: city) else {
-            return
-        }
+        let viewController = presentWeatherViewController(forCity: city,
+                                                          withApiKey: API_KEY,
+                                                          andDelegate: self)
+    
         handleNavigation(forViewController: viewController,
                          withNavigationType: navigationType,
                          animated: animated)
@@ -57,8 +51,9 @@ final class RouterApp: Router {
     
     func navigateToWeatherView(forCity city: String) -> some View {
         self.rootNavigator.setNavigationBarHidden(true, animated: false)
-        
-        return weatherSDK?.presentWeatherView(forCity: city)
+        return presentWeatherView(forCity: city,
+                                  withApiKey: API_KEY,
+                                  andDelegate: self)
     }
     
     private func handleNavigation(forViewController viewController: UIViewController,

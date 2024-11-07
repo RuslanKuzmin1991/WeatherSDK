@@ -5,6 +5,8 @@
 //  Created by Ruslan Kuzmin on 21.10.24.
 //
 
+import Foundation
+
 extension String {
     var formatTime: String? {
         let dateFormatter = DateFormatter()

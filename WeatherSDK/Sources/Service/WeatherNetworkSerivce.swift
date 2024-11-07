@@ -35,6 +35,10 @@ enum ApiError: Error {
 }
 
 final internal class WeatherNetworkSerivce: WeatherSerivce {
+    typealias CurrentWeatherType = CurrentWeatherDTO
+    typealias WeatherDTOType = WeatherDTO
+    typealias WeatherDataDailyType = WeatherDataDaily
+    
     private var key: String
     private var urlString: String = "https://api.weatherbit.io/v2.0"
     private let hoursForecast = "24"
@@ -43,64 +47,53 @@ final internal class WeatherNetworkSerivce: WeatherSerivce {
         self.key = key
     }
     
-    func getCurrentWeather(forCity city: String) async throws -> CurrentWeatherDTOProtocol {
-        guard var url = URL(string: urlString) else {
-            throw ApiError.wrongUrl
-        }
-        url = url.appendingPathComponent(Endpoint.current.rawValue, conformingTo: .url)
-        url = url.appending(queryItems: [
+    func getCurrentWeather(forCity city: String) async throws -> CurrentWeatherType {
+        let params = [
             URLQueryItem(name: ApiParamKeys.city.rawValue, value: city),
             URLQueryItem(name: ApiParamKeys.key.rawValue, value: key)
-        ])
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = ApiMethod.get.rawValue
-  
-        let weatherResponse: WeatherResponse = try await performRequest(urlRequest: request)
+        ]
+        let weatherResponse: WeatherResponse = try await performRequest(endPoint: .current,
+                                                                        params: params)//(urlRequest: request)
         guard let dataModel = weatherResponse.data.first else {
             throw ApiError.invalidResponse
         }
         return dataModel
     }
     
-    func getHourlyForecastWeather(forCity city: String) async throws -> [WeatherDTOProtocol] {
-        guard var url = URL(string: "https://api.weatherbit.io/v2.0" ) else {
-            throw ApiError.wrongUrl
-        }
-        url = url.appendingPathComponent(Endpoint.hourlyForecast.rawValue,
-                                         conformingTo: .url)
-        url = url.appending(queryItems: [
+    func getHourlyForecastWeather(forCity city: String) async throws -> [WeatherDTOType] {
+        let params = [
             URLQueryItem(name: ApiParamKeys.city.rawValue, value: city),
             URLQueryItem(name: ApiParamKeys.key.rawValue, value: key),
             URLQueryItem(name: ApiParamKeys.hours.rawValue, value: hoursForecast)
-        ])
-        var request = URLRequest(url: url)
-        request.httpMethod = ApiMethod.get.rawValue
-        
-        let weatherResponse: WeatherResponseHour = try await performRequest(urlRequest: request)
+        ]
+        let weatherResponse: WeatherResponseHour = try await performRequest(endPoint: .hourlyForecast,
+                                                                            params: params)
         return weatherResponse.data
     }
     
-    func getWeeklyForecastWeather(forCity city: String) async throws -> [WeatherDataDailyProtocol] {
-        guard var url = URL(string: urlString) else {
-            throw ApiError.wrongUrl
-        }
-        url = url.appendingPathComponent(Endpoint.dailyForecast.rawValue, conformingTo: .url)
-        url = url.appending(queryItems: [
+    func getWeeklyForecastWeather(forCity city: String) async throws -> [WeatherDataDailyType] {
+        let params = [
             URLQueryItem(name: ApiParamKeys.city.rawValue, value: city),
             URLQueryItem(name: ApiParamKeys.key.rawValue, value: key),
             URLQueryItem(name: ApiParamKeys.days.rawValue, value: hoursForecast)
-        ])
-        var request = URLRequest(url: url)
-        request.httpMethod = ApiMethod.get.rawValue
-        
-        let weatherResponse: WeatherResponseDaily = try await performRequest(urlRequest: request)
+        ]
+        let weatherResponse: WeatherResponseDaily = try await performRequest(endPoint: .dailyForecast,
+                                                                             params: params)
         return weatherResponse.data
     }
     
-    private func performRequest<T: Decodable>(urlRequest: URLRequest) async throws -> T {
+    private func performRequest<T: Decodable>(endPoint: Endpoint,
+                                              params: [URLQueryItem]) async throws -> T {
+        guard var url = URL(string: urlString) else {
+            throw ApiError.wrongUrl
+        }
+        url = url.appendingPathComponent(endPoint.rawValue, conformingTo: .url)
+        url = url.appending(queryItems: params)
+        var request = URLRequest(url: url)
+        request.httpMethod = ApiMethod.get.rawValue
+        
         do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+            let (data, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw ApiError.invalidResponse
             }

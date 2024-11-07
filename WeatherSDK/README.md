@@ -38,20 +38,15 @@ WeatherSDK is not published on a GitHub. Integration via SPM is written for demo
 
 ### Initialization
 
-To use the SDK, you need to initialize it with your API Key and optionally set a delegate to handle events such as completion or errors.
+To use the SDK, you need to initialize to call presentWeatherViewController or presentWeatherView with your API Key and optionally set a delegate to handle events such as completion or errors.
 
 Example:
 
 import WeatherSDK
 
 class MyViewController: UIViewController, WeatherSDKDelegate {
-    var weatherSDK: WeatherSDKEntity!
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Initialize WeatherSDK with API Key and delegate
-        weatherSDK = WeatherSDKEntity(withApiKey: "your-api-key", andDelegate: self)
     }
 
     // Implement the delegate methods
@@ -70,30 +65,34 @@ You can display weather data either as a UIViewController (for UIKit) or as a Sw
 
 a. Presenting a UIViewController (UIKit):
 
-The presentWeatherViewController(forCity:) method returns a UIViewController that can be presented or pushed onto a navigation stack.
+The presentWeatherViewController(forCity: withApiKey: andDelegate:) method returns a UIViewController that can be presented or pushed onto a navigation stack.
 
-let weatherVC = weatherSDK.presentWeatherViewController(forCity: "Munich")
+let weatherVC = presentWeatherViewController(forCity: "Munich",
+                               withApiKey: "your-api-key",
+                               andDelegate: WeatherDelegate()))
 self.present(weatherVC, animated: true, completion: nil)
 
 Alternatively, if using a UINavigationController:
 
-let weatherVC = weatherSDK.presentWeatherViewController(forCity: "Munich")
+let weatherVC = presentWeatherViewController(forCity: "Munich",
+                                            withApiKey: "your-api-key",
+                                            andDelegate: WeatherDelegate()))
 self.navigationController?.pushViewController(weatherVC, animated: true)
 
 b. Embedding a SwiftUI View:
 
-If you are using SwiftUI, you can present the weather view using presentWeatherView(forCity:), which returns a some View.
+If you are using SwiftUI, you can present the weather view using presentWeatherView(forCity: withApiKey: andDelegate:), which returns a some View.
 
 import SwiftUI
 import WeatherSDK
 
 struct ContentView: View {
-    var weatherSDK = WeatherSDKEntity(withApiKey: "your-api-key", andDelegate: MyWeatherDelegate())
-
     var body: some View {
         NavigationView {
-            weatherSDK.presentWeatherView(forCity: "Munich")
-                .navigationTitle("Weather in Munich")
+            presentWeatherView(forCity: "Munich",
+                               withApiKey: "your-api-key",
+                               andDelegate: WeatherDelegate())
+            .navigationTitle("Weather in Munich")
         }
     }
 }
@@ -139,13 +138,11 @@ extension MyViewController: WeatherSDKDelegate {
 ### UIKit Integration Example:
 
 class WeatherViewController: UIViewController, WeatherSDKDelegate {
-    var weatherSDK: WeatherSDKEntity!
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        weatherSDK = WeatherSDKEntity(withApiKey: "your-api-key", andDelegate: self)
-        
-        let weatherVC = weatherSDK.presentWeatherViewController(forCity: "Berlin")
+        let weatherVC = presentWeatherViewController(forCity: "Berlin",
+                                                     withApiKey: "your-api-key",
+                                                     andDelegate: WeatherDelegate())
         self.present(weatherVC, animated: true, completion: nil)
     }
 
@@ -161,11 +158,11 @@ class WeatherViewController: UIViewController, WeatherSDKDelegate {
 ### SwiftUI Integration Example:
 
 struct WeatherScreen: View {
-    @StateObject var weatherSDK = WeatherSDKEntity(withApiKey: "your-api-key", andDelegate: WeatherDelegate())
-
     var body: some View {
         NavigationView {
-            weatherSDK.presentWeatherView(forCity: "Paris")
+            presentWeatherView(forCity: "Paris",
+            withApiKey: "your-api-key",
+            andDelegate: WeatherDelegate())
                 .navigationTitle("Weather in Paris")
         }
     }

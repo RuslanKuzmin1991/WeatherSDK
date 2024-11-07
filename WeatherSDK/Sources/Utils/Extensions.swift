@@ -10,7 +10,7 @@ import SwiftUI
 
 extension Bundle {
     static var sdkBundle: Bundle {
-        let bundle = Bundle(for: WeatherSDKEntity.self)
+        let bundle = Bundle(for: RouterSDK.self)
         if let resourceBundleURL = bundle.url(forResource: "SDKBundle",
                                               withExtension: "bundle"),
            let resourceBundle = Bundle(url: resourceBundleURL) {

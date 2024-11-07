@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WeatherSDK
 
 struct NavigationControllerKey: EnvironmentKey {
     static let defaultValue: RouterApp? = nil

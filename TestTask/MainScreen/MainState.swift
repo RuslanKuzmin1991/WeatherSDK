@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UIKit
-import WeatherSDK
 
 protocol MainState: ObservableObject {
     var isEmbedded: Bool { get set }
