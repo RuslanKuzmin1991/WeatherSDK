@@ -87,9 +87,6 @@
 			membershipExceptions = (
 				Tests/WeatherSDKTests/WeatherSDKTests.swift,
 			);
-			publicHeaders = (
-				WeatherSDK.h,
-			);
 			target = 58C848F02CC32D9400854541 /* WeatherSDK */;
 		};
 		58D37BB12CC3DE4F00380C41 /* Exceptions for "TestTask" folder in "TestTask" target */ = {

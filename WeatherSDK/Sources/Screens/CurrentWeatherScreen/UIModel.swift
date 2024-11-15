@@ -27,7 +27,7 @@ internal struct WeatherUIData: WeatherUIDataProtocol {
     
     init() {}
     
-    init(weatherDTO: CurrentWeatherDTOProtocol,
+    init(weatherDTO: any CurrentWeatherProtocol,
           cityName: String) {
         let formatedTime = weatherDTO.dateTime.formatTimeHoursAndMinutes ?? weatherDTO.dateTime
         let localizedCityNameString = String(format: "weather_in_city_label".localized, cityName)
@@ -42,7 +42,7 @@ internal struct WeatherUIData: WeatherUIDataProtocol {
         self.icon = URL(string: urlStr)
     }
     
-    init(weatherDTO: WeatherDTOProtocol) {
+    init(weatherDTO: any WeatherDTOProtocol) {
         let formatedTime = weatherDTO.timestampUtc.formatTime ?? weatherDTO.timestampUtc
         let localizedTemperatureString = String(format: "temperature_in_city_label".localized, weatherDTO.temp)
         self.title = formatedTime
@@ -53,7 +53,7 @@ internal struct WeatherUIData: WeatherUIDataProtocol {
         self.icon = URL(string: urlStr)
     }
     
-    init(weatherDaily: WeatherDataDailyProtocol) {
+    init(weatherDaily: any WeatherDataDailyProtocol) {
         if let temp = weatherDaily.temp {
             let localizedTemperatureString = String(format: "temperature_in_city_label".localized, temp)
             self.temp = localizedTemperatureString

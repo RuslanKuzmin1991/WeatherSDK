@@ -5,6 +5,8 @@
 //  Created by Ruslan Kuzmin on 29.10.24.
 //
 
+import SwiftUI
+
 protocol WeeklyForecastStateProtocol: BasicStateProtocol,
                                       ObservableObject {
     var data: [WeatherUIDataProtocol] { get set }
@@ -15,7 +17,7 @@ final class WeeklyForecastState: WeeklyForecastStateProtocol {
     var router: (any RouterProtocol)?
     var cityName: String
     var isEmbedded: Bool = false
-    let weatherService: WeatherSerivce
+    let weatherService: any WeatherSerivce
     var shouldGoBack = false
     
     @Published var data: [WeatherUIDataProtocol] = []
@@ -23,7 +25,7 @@ final class WeeklyForecastState: WeeklyForecastStateProtocol {
     
     init(isEmbedded: Bool = false,
          cityName: String,
-         weatherService: WeatherSerivce) {
+         weatherService: any WeatherSerivce) {
         self.isEmbedded = isEmbedded
         self.cityName = cityName
         self.weatherService = weatherService

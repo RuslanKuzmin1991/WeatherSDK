@@ -34,47 +34,27 @@ class MockNavigationController: UINavigationController {
     }
 }
 
-class MockWeatherSDKObj: WeatherSDKProtocol {
-    func presentWeatherView(forCity cityName: String) -> AnyView {
-        return AnyView(Text("city weather \(cityName)"))
-    }
-    
-    func presentWeatherViewController(forCity city: String) -> UIViewController {
-        return UIViewController()
-    }
-}
 final class RouterAppTests: XCTestCase {
 
     var router: RouterApp!
     var mockNavigationController: MockNavigationController!
-    var mockWeatherSDK: MockWeatherSDKObj!
 
     override func setUp() {
         super.setUp()
         mockNavigationController = MockNavigationController()
         router = RouterApp()
         router.rootNavigator = mockNavigationController
-        mockWeatherSDK = MockWeatherSDKObj()
-        router.weatherSDK = mockWeatherSDK
     }
 
     override func tearDown() {
         router = nil
         mockNavigationController = nil
-        mockWeatherSDK = nil
         super.tearDown()
     }
 
     func testRouterInitialization() {
         XCTAssertNotNil(router.rootNavigator, "Root navigator should be initialized")
         XCTAssertTrue(router.rootNavigator.viewControllers.isEmpty, "Initially, root navigator should have no view controllers")
-    }
-
-    func testSetRootView() {
-        router.setRootView()
-        XCTAssertNotNil(router.weatherSDK, "WeatherSDK should be initialized")
-//        XCTAssertFalse(router.rootNavigator.viewControllers.isEmpty, "Root view controller should be set")
-//        XCTAssertEqual(router.rootNavigator.viewControllers.first?.title, "main_screen_title".localized, "Root view controller's title should be set")
     }
 
     func testNavigateToWeatherScreenWithPush() {

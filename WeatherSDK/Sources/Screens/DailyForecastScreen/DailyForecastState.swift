@@ -4,11 +4,12 @@
 //
 //  Created by Ruslan Kuzmin on 24.10.24.
 //
+import SwiftUI
 
 protocol DailyForecastStateProtocol: BasicStateProtocol, ObservableObject {
     var shouldGoBack: Bool { get set }
     var data: [WeatherUIDataProtocol] { get set }
-    var weatherService: WeatherSerivce { get }
+    var weatherService: any WeatherSerivce { get }
     func updateData() async
 }
 
@@ -27,12 +28,12 @@ final internal class DailyForecastState: DailyForecastStateProtocol {
     //For preview
 //      self.currentWeatherData =  WeatherUIData(weatherDTO: CurrentWeatherDTO(temperature: 14, weather: Weather(description: "Clear sky"), dateTime: "20"), cityName: "Munich")
     
-    let weatherService: WeatherSerivce
+    let weatherService: any WeatherSerivce
 
     
     init(cityName: String,
-        weatherService: WeatherSerivce,
-        isEmbedded: Bool = false) {
+         weatherService: any WeatherSerivce,
+         isEmbedded: Bool = false) {
         self.cityName = cityName
         self.weatherService = weatherService
         self.isEmbedded = isEmbedded

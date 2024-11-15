@@ -5,6 +5,8 @@
 //  Created by Ruslan Kuzmin on 17.10.24.
 //
 
+import SwiftUI
+
 protocol MainWeatherStateProtocol: BasicStateProtocol, ObservableObject {
     var shouldGoBack: Bool { get set }
     var currentWeatherData: WeatherUIDataProtocol { get set }
@@ -17,7 +19,7 @@ final internal class MainWeatherState: MainWeatherStateProtocol {
     var router: (any RouterProtocol)?
     var isEmbedded: Bool = false
     var error: Error?
-    let weatherService: WeatherSerivce
+    let weatherService: any WeatherSerivce
     @Published var cityName: String = ""
     @Published var isLoading = false
     @Published var shouldGoBack = false
@@ -26,7 +28,7 @@ final internal class MainWeatherState: MainWeatherStateProtocol {
 //      self.currentWeatherData =  WeatherUIData(weatherDTO: CurrentWeatherDTO(temperature: 14, weather: Weather(description: "Clear sky"), dateTime: "20"), cityName: "Munich")
     
     init(cityName: String,
-        weatherService: WeatherSerivce,
+        weatherService: any WeatherSerivce,
         isEmbedded: Bool = false) {
         self.cityName = cityName
         self.weatherService = weatherService

@@ -9,66 +9,34 @@ import Foundation
 import UIKit
 import SwiftUI
 
-/// A protocol defining the core interface for presenting weather-related views in the WeatherSDK.
-/// ///
-/// Conforming types should implement methods to present weather information for a specified city
-/// using either a UIKit `UIViewController` or a SwiftUI `AnyView`.
-///
-/// This protocol can be adopted by any class or struct that needs to present weather information
-/// in both UIKit-based and SwiftUI-based applications.
-public protocol WeatherSDKProtocol {
-    /// Presents a weather view controller for a specific city
-    func presentWeatherViewController(forCity cityName: String) -> UIViewController
-    /// Presents a weather view controller for a specific city
-    func presentWeatherView(forCity cityName: String) -> AnyView
-}
-/// A class representing the Weather SDK.
-///
-/// This class provides methods to present weather views in both
+/// This file provides methods to present weather views in both
 /// UIKit and SwiftUI applications.
 ///
-/// - Parameters:
-///   - apiKey: The API key for accessing weather data.
-///   - delegate: The delegate to handle completion events.
-///
-public class WeatherSDKEntity: WeatherSDKProtocol {
-    var key: String
-    weak var delegate: WeatherSDKDelegate?
+/// Presents a weather view controller for a specific city
+public func presentWeatherViewController(forCity cityName: String,
+                                         withApiKey key: String,
+                                         andDelegate delegate: WeatherSDKDelegate?) -> UIViewController {
+    let vc = ForecastScreenBuilder().buildWeatherScreen(forCityName: cityName,
+                                                        andApiKey: key,
+                                                        delegate: delegate)
+    return vc
+}
     
-    /// Initializes the SDK with an API key and a delegate.
-    public init(withApiKey apiKey: String,
-         andDelegate delegate: WeatherSDKDelegate) {
-        self.key = apiKey
-        self.delegate = delegate
-    }
-    
-    /// Sets the delegate for handling SDK events.
-    public func setDelegate(delegate: WeatherSDKDelegate) {
-        self.delegate = delegate
-    }
-    
-    /// Presents a weather view controller for a specific city
-    public func presentWeatherViewController(forCity cityName: String) -> UIViewController {
-        let vc = ForecastScreenBuilder().buildWeatherScreen(forCityName: cityName,
-                                                            andApiKey: key,
-                                                            delegate: delegate)
-        return vc
-    }
-    
-    /// Presents a SwiftUI weather view for a specific city.
-    public func presentWeatherView(forCity cityName: String) -> AnyView {
-        let view = ForecastViewBuilder().buildWeatherView(forCityName: cityName,
+/// Presents a SwiftUI weather view for a specific city.
+public func presentWeatherView(forCity cityName: String,
+                               withApiKey key: String,
+                               andDelegate delegate: WeatherSDKDelegate?) -> AnyView {
+    let view = ForecastViewBuilder().buildWeatherView(forCityName: cityName,
                                                      andApiKey: key,
                                                      delegate: delegate)
-        return view as! AnyView
-    }
+    return view as! AnyView
 }
 
 
-/// A protocol that defines methods to handle events for `WeatherSDKEntity`.
+/// A protocol that defines methods to handle events for `WeatherSDKControllers`.
 ///
 /// Implement this protocol to respond to completion or error events when working
-/// with `WeatherSDKEntity`. The delegate provides feedback when weather data is
+/// with `WeatherSDKControllers`. The delegate provides feedback when weather data is
 /// successfully loaded or when an error occurs.
 public protocol WeatherSDKDelegate: AnyObject {
     
