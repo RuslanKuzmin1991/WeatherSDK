@@ -44,16 +44,4 @@ extension String {
             return self
         }
     }
-    
-    func localizedString(defaultLanguage: String = "en") -> String {
-        if let path = Bundle.sdkBundle.path(forResource: Locale.current.language.languageCode?.identifier, ofType: "lproj"),
-           let bundle = Bundle(path: path) {
-            return NSLocalizedString(self, bundle: bundle, comment: "")
-        } else if let path = Bundle.sdkBundle.path(forResource: defaultLanguage, ofType: "lproj"),
-                  let defaultBundle = Bundle(path: path) {
-            return NSLocalizedString(self, bundle: defaultBundle, comment: "")
-        } else {
-            return self
-        }
-    }
 }
